@@ -1,0 +1,353 @@
+/* ============================================================
+ *   Firefox userChrome.css — Minimal + Compact + KDE/CSD sane
+ *   Updated: active tab same as others + close button hard-right
+ *   ============================================================ */
+
+/* === ROOT VARIABLES === */
+:root {
+    --transition-duration: 0.25s;
+    --transition-easing: ease-out;
+
+    --mono-font-stack: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas,
+    'Liberation Mono', 'Menlo', 'Monaco', 'Cascadia Code', monospace;
+
+    /* Tabs */
+    --tab-character-width: 10ch;
+    --tab-min-height: 26px;
+
+    /* Toolbar / URL bar */
+    --nav-bar-min-height: 32px;
+    --urlbar-min-height: 26px;
+
+    /* Extensions button */
+    --extension-button-width: 18px;
+}
+
+/* ============================================================
+ *   RESET / CLEAN BASE
+ *   ============================================================ */
+
+#navigator-toolbox {
+border-bottom: none !important;
+}
+
+#TabsToolbar,
+#nav-bar {
+border: none !important;
+box-shadow: none !important;
+}
+
+.titlebar-spacer {
+    display: none !important;
+}
+
+/* Sidebar transparency */
+#sidebar-main,
+#sidebar-box {
+background: transparent !important;
+background-image: none !important;
+}
+
+/* ============================================================
+ *   KDE / LINUX CSD FIX: MAKE TITLEBAR MATCH TAB HEIGHT
+ *   ============================================================ */
+
+#titlebar,
+#TabsToolbar {
+min-height: var(--tab-min-height) !important;
+max-height: var(--tab-min-height) !important;
+padding: 0 !important;
+margin: 0 !important;
+}
+
+#TabsToolbar-customization-target,
+#tabbrowser-tabs {
+min-height: var(--tab-min-height) !important;
+max-height: var(--tab-min-height) !important;
+padding: 0 !important;
+margin: 0 !important;
+}
+
+.titlebar-buttonbox-container,
+.titlebar-buttonbox,
+.titlebar-button {
+    min-height: var(--tab-min-height) !important;
+    max-height: var(--tab-min-height) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.titlebar-button {
+    padding-inline: 6px !important;
+}
+
+/* ============================================================
+ *   OPTIONAL: HIDE WINDOW CONTROLS COMPLETELY
+ *   ============================================================ */
+/*
+ * .titlebar-buttonbox-container {
+ *    display: none !important;
+ * }
+ */
+
+/* ============================================================
+ *   NAV BUTTON REMOVAL
+ *   ============================================================ */
+
+#back-button,
+#forward-button {
+display: none !important;
+}
+
+/* ============================================================
+ *   TYPOGRAPHY
+ *   ============================================================ */
+
+#urlbar-input,
+.urlbarView-url,
+#appMenu-popup {
+font-family: var(--mono-font-stack) !important;
+}
+
+/* ============================================================
+ *   SMART ICON HIDING (URL BAR CLEAN)
+ *   ============================================================ */
+
+#star-button-box,
+#alltabs-button,
+#picture-in-picture-button,
+#reader-mode-button,
+#translations-button {
+opacity: 0 !important;
+pointer-events: none !important;
+transition: opacity var(--transition-duration) var(--transition-easing) !important;
+}
+
+#urlbar:hover #star-button-box,
+#urlbar:hover #alltabs-button,
+#urlbar:hover #picture-in-picture-button,
+#urlbar:hover #reader-mode-button,
+#urlbar:hover #translations-button,
+#urlbar:focus-within #star-button-box,
+#urlbar:focus-within #alltabs-button,
+#urlbar:focus-within #picture-in-picture-button,
+#urlbar:focus-within #reader-mode-button,
+#urlbar:focus-within #translations-button {
+opacity: 1 !important;
+pointer-events: auto !important;
+}
+
+/* ============================================================
+ *   TAB COMPACT MODE (WITH LINUX/KDE PADDING FIXES)
+ *   ============================================================ */
+
+.tabbrowser-tab {
+    min-height: var(--tab-min-height) !important;
+    max-height: var(--tab-min-height) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* The common Linux “tabs still tall” culprit */
+.tab-content {
+    padding-block: 0px !important;
+    margin-block: 0px !important;
+
+    /* Make tab internals behave predictably */
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+/* Background baseline (for ALL tabs) */
+.tab-background {
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+/* ============================================================
+ *   MAKE ALL TABS LOOK THE SAME (NO ACTIVE TAB COLOR)
+ *   ============================================================ */
+
+/* Kill selected tab special background/shadow/border */
+.tabbrowser-tab[selected] .tab-background,
+.tabbrowser-tab[multiselected] .tab-background {
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
+/* Kill the usual “active tab” top border / highlight effects */
+.tabbrowser-tab[selected],
+.tabbrowser-tab[multiselected] {
+    color: inherit !important;
+}
+
+/* Ensure label/icon don’t get special coloring on selected */
+.tabbrowser-tab[selected] .tab-label,
+.tabbrowser-tab[multiselected] .tab-label,
+.tabbrowser-tab[selected] .tab-icon-image,
+.tabbrowser-tab[multiselected] .tab-icon-image {
+    color: inherit !important;
+    fill: currentColor !important;
+    opacity: 1 !important;
+}
+
+/* (Optional) remove any focus/selected outline that sneaks in */
+.tabbrowser-tab[selected] .tab-content,
+.tabbrowser-tab[multiselected] .tab-content {
+    outline: none !important;
+}
+
+/* ============================================================
+ *   TAB LABELS + TRUNCATION
+ *   ============================================================ */
+
+.tab-label-container {
+    /* Let label take the middle space, but allow shrinking */
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+
+    max-width: var(--tab-character-width) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.tab-label {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Icon spacing */
+.tab-icon-image {
+    margin: 0 !important;
+}
+
+/* ============================================================
+ *   MOVE TAB CLOSE BUTTON ALL THE WAY RIGHT
+ *   ============================================================ */
+
+/* Ensure the close button is last, then push it to the far right */
+.tab-close-button {
+    order: 99 !important;
+    margin-inline-start: auto !important; /* <-- hard-right */
+    padding: 0 !important;
+    background: none !important;
+}
+
+/* ============================================================
+ *   CLOSE BUTTON HIDDEN
+ *   ============================================================ */
+
+.tab-close-button {
+    display: none !important;
+}
+
+/* Also remove any leftover spacing reserved for it */
+.tab-content::after,
+.tab-content::before {
+    display: none !important;
+}
+
+/* ============================================================
+ *   TOOLBAR BUTTON COMPACTING (PUFFY FIX)
+ *   ============================================================ */
+
+#TabsToolbar .toolbarbutton-1,
+#nav-bar .toolbarbutton-1 {
+padding-block: 2px !important;
+margin: 0 !important;
+}
+
+/* ============================================================
+ *   EXTENSIONS BUTTON MINIMAL
+ *   ============================================================ */
+
+#unified-extensions-button {
+width: var(--extension-button-width) !important;
+padding-inline: 2px !important;
+opacity: 0.3 !important;
+transition: opacity var(--transition-duration) var(--transition-easing) !important;
+}
+
+#unified-extensions-button:hover {
+opacity: 0.85 !important;
+}
+
+#unified-extensions-button > .toolbarbutton-icon {
+width: 10px !important;
+}
+
+/* ============================================================
+ *   URL BAR COMPACT + TRANSPARENT
+ *   ============================================================ */
+
+#urlbar {
+--toolbar-field-background-color: transparent !important;
+--toolbar-field-border-color: transparent !important;
+background: transparent !important;
+border: none !important;
+box-shadow: none !important;
+min-height: var(--urlbar-min-height) !important;
+}
+
+#urlbar-input {
+min-height: var(--urlbar-min-height) !important;
+background: transparent !important;
+border: none !important;
+}
+
+/* ============================================================
+ *   OPTIONAL: COMPACT NAVBAR HEIGHT
+ *   ============================================================ */
+
+#nav-bar {
+min-height: var(--nav-bar-min-height) !important;
+}
+
+/* ============================================================
+ *   SIDEBAR REVAMP SUPPORT
+ *   ============================================================ */
+
+@media (-moz-bool-pref: "sidebar.revamp") {
+    #tabbrowser-tabbox {
+    outline: none !important;
+    box-shadow: none !important;
+    }
+}
+
+/* ============================================================
+ *   RESPONSIVE TUNING
+ *   ============================================================ */
+
+@media (max-width: 768px) {
+    :root {
+        --tab-character-width: 8ch;
+        --tab-min-height: 28px;
+    }
+
+    .tab-label {
+        font-size: 11px !important;
+    }
+}
+
+/* ============================================================
+ *   ACCESSIBILITY: KEYBOARD FOCUS
+ *   (This is the only remaining “difference” between tabs — focus)
+ *   ============================================================ */
+
+.tabbrowser-tab:focus-visible {
+    outline: 1px solid rgba(128, 128, 128, 0.5) !important;
+    outline-offset: -1px !important;
+}
+
+#unified-extensions-button:focus-visible {
+outline: 1px solid rgba(128, 128, 128, 0.7) !important;
+}
