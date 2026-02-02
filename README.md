@@ -1,1 +1,1 @@
-# minimalFF2.0KDE
+### A small, clean `userChrome.css` tweak for Firefox on Linux/KDE.
